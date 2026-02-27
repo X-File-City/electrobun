@@ -1,0 +1,306 @@
+{
+  "id": "electrobun-architecture",
+  "title": "Electrobun Architecture Tour",
+  "description": "A guided walkthrough of the Electrobun desktop framework — a cross-platform app runtime built on Bun, Chromium/WebView, Zig, and native C++/Objective-C++.",
+  "version": "1.0.0",
+  "steps": [
+    {
+      "id": "welcome-overview",
+      "title": "Welcome to Electrobun",
+      "description": "Electrobun is a full-stack desktop application framework. The two main directories are `package/` (the framework itself) and `kitchen/` (the test app). Templates for new projects live in `templates/`, and build/release scripts are in `scripts/`.",
+      "focusDirectory": "",
+      "colorMode": "fileTypes",
+      "highlightLayers": [
+        {
+          "id": "main-dirs",
+          "name": "Core Directories",
+          "color": "#3b82f6",
+          "items": [
+            { "path": "package", "type": "directory" },
+            { "path": "kitchen", "type": "directory" },
+            { "path": "templates", "type": "directory" },
+            { "path": "scripts", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        }
+      ]
+    },
+    {
+      "id": "runtime-core",
+      "title": "Bun Runtime Core",
+      "description": "The main process API lives in `package/src/bun/core/`. This is where the key abstractions are defined: BrowserWindow, BrowserView, ApplicationMenu, ContextMenu, Tray, Updater, and more. The entry point is `index.ts` and configuration is in `ElectrobunConfig.ts`.",
+      "focusDirectory": "package/src/bun",
+      "colorMode": "fileTypes",
+      "highlightLayers": [
+        {
+          "id": "core-classes",
+          "name": "Core API Classes",
+          "color": "#8b5cf6",
+          "items": [
+            { "path": "package/src/bun/core/BrowserWindow.ts", "type": "file" },
+            { "path": "package/src/bun/core/BrowserView.ts", "type": "file" },
+            { "path": "package/src/bun/core/ApplicationMenu.ts", "type": "file" },
+            { "path": "package/src/bun/core/Tray.ts", "type": "file" },
+            { "path": "package/src/bun/core/Updater.ts", "type": "file" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        },
+        {
+          "id": "event-system",
+          "name": "Event System",
+          "color": "#f59e0b",
+          "items": [
+            { "path": "package/src/bun/events", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        }
+      ]
+    },
+    {
+      "id": "native-wrappers",
+      "title": "Platform Native Wrappers",
+      "description": "Electrobun has native wrappers for each desktop platform. macOS uses Objective-C++ (`macos/nativeWrapper.mm`), Windows and Linux use C++ (`win/nativeWrapper.cpp`, `linux/nativeWrapper.cpp`). Shared C++ headers in `shared/` provide common abstractions for config, callbacks, permissions, ASAR archives, and CEF integration.",
+      "focusDirectory": "package/src/native",
+      "colorMode": "fileTypes",
+      "highlightLayers": [
+        {
+          "id": "platform-macos",
+          "name": "macOS (Obj-C++)",
+          "color": "#ef4444",
+          "items": [
+            { "path": "package/src/native/macos", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        },
+        {
+          "id": "platform-windows",
+          "name": "Windows (C++)",
+          "color": "#3b82f6",
+          "items": [
+            { "path": "package/src/native/win", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        },
+        {
+          "id": "platform-linux",
+          "name": "Linux (C++)",
+          "color": "#22c55e",
+          "items": [
+            { "path": "package/src/native/linux", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        },
+        {
+          "id": "shared-headers",
+          "name": "Shared Headers",
+          "color": "#f59e0b",
+          "items": [
+            { "path": "package/src/native/shared", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        }
+      ]
+    },
+    {
+      "id": "zig-components",
+      "title": "Zig Launcher & Extractor",
+      "description": "Performance-critical low-level components are written in Zig. The `launcher/` creates self-contained app executables, and the `extractor/` handles unpacking bundled application archives at runtime. Both compile to native binaries for each platform.",
+      "focusDirectory": "package/src",
+      "colorMode": "fileTypes",
+      "highlightLayers": [
+        {
+          "id": "zig-launcher",
+          "name": "Launcher (Zig)",
+          "color": "#f97316",
+          "items": [
+            { "path": "package/src/launcher", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        },
+        {
+          "id": "zig-extractor",
+          "name": "Extractor (Zig)",
+          "color": "#ec4899",
+          "items": [
+            { "path": "package/src/extractor", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        }
+      ]
+    },
+    {
+      "id": "browser-and-preload",
+      "title": "Browser API & Preload Bridge",
+      "description": "The `browser/` module is the webview-side API that runs inside rendered pages. The `preload/` scripts act as a bridge between the Bun main process and the sandboxed browser context — handling RPC, drag regions, encryption, and the `<webview>` tag. The `shared/` module provides cross-boundary utilities like the RPC protocol and platform detection.",
+      "focusDirectory": "package/src",
+      "colorMode": "fileTypes",
+      "highlightLayers": [
+        {
+          "id": "browser-api",
+          "name": "Browser API",
+          "color": "#06b6d4",
+          "items": [
+            { "path": "package/src/browser", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        },
+        {
+          "id": "preload-bridge",
+          "name": "Preload Bridge",
+          "color": "#a855f7",
+          "items": [
+            { "path": "package/src/bun/preload", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        },
+        {
+          "id": "shared-utils",
+          "name": "Shared Utilities",
+          "color": "#64748b",
+          "items": [
+            { "path": "package/src/shared", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        }
+      ]
+    },
+    {
+      "id": "cli-tooling",
+      "title": "CLI & Build System",
+      "description": "The CLI (`package/src/cli/`) powers the `electrobun` command — handling `init`, `dev`, `build`, and `watch`. The main build orchestrator (`package/build.ts`) is a comprehensive 1800+ line script that downloads and vendors Bun, Zig, CEF, and WebView2, compiles native wrappers, creates ASAR bundles, and handles code signing.",
+      "focusDirectory": "package",
+      "colorMode": "fileTypes",
+      "highlightLayers": [
+        {
+          "id": "cli-module",
+          "name": "CLI",
+          "color": "#10b981",
+          "items": [
+            { "path": "package/src/cli", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        },
+        {
+          "id": "build-system",
+          "name": "Build Orchestrator",
+          "color": "#f59e0b",
+          "items": [
+            { "path": "package/build.ts", "type": "file" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        },
+        {
+          "id": "release-scripts",
+          "name": "Release Scripts",
+          "color": "#ef4444",
+          "items": [
+            { "path": "package/scripts", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        }
+      ]
+    },
+    {
+      "id": "kitchen-test-app",
+      "title": "Kitchen Sink Test App",
+      "description": "The `kitchen/` directory is a comprehensive test application. It contains automated tests (`tests/`), interactive playgrounds for features like file dialogs, trays, clipboard, menus, and window events (`playgrounds/`), plus a test runner and test harness for the full test suite.",
+      "focusDirectory": "kitchen/src",
+      "colorMode": "fileTypes",
+      "highlightLayers": [
+        {
+          "id": "test-suite",
+          "name": "Automated Tests",
+          "color": "#22c55e",
+          "items": [
+            { "path": "kitchen/src/tests", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        },
+        {
+          "id": "playgrounds",
+          "name": "Feature Playgrounds",
+          "color": "#8b5cf6",
+          "items": [
+            { "path": "kitchen/src/playgrounds", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        },
+        {
+          "id": "test-infra",
+          "name": "Test Infrastructure",
+          "color": "#64748b",
+          "items": [
+            { "path": "kitchen/src/test-runner", "type": "directory" },
+            { "path": "kitchen/src/test-harness", "type": "directory" },
+            { "path": "kitchen/src/test-framework", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        }
+      ]
+    },
+    {
+      "id": "project-templates",
+      "title": "Starter Templates",
+      "description": "Electrobun ships with 14 project templates for `electrobun init`. These range from a basic hello-world to full applications like a notes app, photo booth, SQLite CRUD app, and a multi-tab browser. Framework templates cover React, Vue, Svelte, Solid, and Angular with Vite.",
+      "focusDirectory": "templates",
+      "colorMode": "fileTypes"
+    },
+    {
+      "id": "full-picture",
+      "title": "The Full Picture",
+      "description": "Electrobun is a multi-language desktop framework: TypeScript for the runtime and APIs, C++/Objective-C++ for native platform integration, and Zig for the launcher and extractor. The `package/` directory is the heart of the framework, `kitchen/` validates everything with tests and playgrounds, and `templates/` gets new users started fast.",
+      "focusDirectory": "",
+      "colorMode": "fileTypes",
+      "highlightLayers": [
+        {
+          "id": "framework-core",
+          "name": "Framework (package/)",
+          "color": "#3b82f6",
+          "items": [
+            { "path": "package", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        },
+        {
+          "id": "testing",
+          "name": "Testing (kitchen/)",
+          "color": "#22c55e",
+          "items": [
+            { "path": "kitchen", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        },
+        {
+          "id": "starter-templates",
+          "name": "Templates",
+          "color": "#f59e0b",
+          "items": [
+            { "path": "templates", "type": "directory" }
+          ],
+          "opacity": 0.7,
+          "renderStrategy": "border"
+        }
+      ]
+    }
+  ]
+}
